@@ -1,12 +1,20 @@
-import { useState } from "react";
-import Alert from '../unknown/alert'
-import { Link } from 'react-router'
-export default function OrderSummary({ items }) {
-  let [show, setShow] = useState(false)
+import { useEffect, useState } from "react";
+import Alert from '../unknown/alert';
+import { Link } from 'react-router';
+import { jwtDecode } from "jwt-decode";
+import Cookies from 'js-cookie';
+
+export default function OrderSummary({ data }) {
+  const [show, setShow] = useState(false);
+  console.log(data);
+  
 
   const handleCheckout = () => {
-    setShow((prev) => !prev)
-  }
+    setShow((prev) => !prev);
+  };
+
+
+
   return (
     <section
       aria-labelledby="summary-heading"
@@ -19,7 +27,7 @@ export default function OrderSummary({ items }) {
       <dl className="mt-6 space-y-4">
         <div className="flex items-center justify-between">
           <dt className="text-sm text-gray-600">Subtotal</dt>
-          <dd className="text-sm font-medium text-gray-900">{items.totalPrice}</dd>
+          <dd className="text-sm font-medium text-gray-900">${data.totalPrice}</dd>
         </div>
         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
           <dt className="flex items-center text-sm text-gray-600">
@@ -32,7 +40,7 @@ export default function OrderSummary({ items }) {
                 Learn more about how shipping is calculated
               </span>
               <svg
-                class="h-5 w-5"
+                className="h-5 w-5"
                 x-description="Heroicon name: solid/question-mark-circle"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
@@ -40,9 +48,9 @@ export default function OrderSummary({ items }) {
                 aria-hidden="true"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
             </Link>
@@ -60,7 +68,7 @@ export default function OrderSummary({ items }) {
                 Learn more about how tax is calculated
               </span>
               <svg
-                class="h-5 w-5"
+                className="h-5 w-5"
                 x-description="Heroicon name: solid/question-mark-circle"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
@@ -68,9 +76,9 @@ export default function OrderSummary({ items }) {
                 aria-hidden="true"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
             </Link>
@@ -79,7 +87,7 @@ export default function OrderSummary({ items }) {
         </div>
         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
           <dt className="text-base font-medium text-gray-900">Order total</dt>
-          <dd className="text-base font-medium text-gray-900">${items.totalPrice + 13.32}</dd>
+          <dd className="text-base font-medium text-gray-900">${data.totalPrice + 13.32}</dd>
         </div>
       </dl>
 

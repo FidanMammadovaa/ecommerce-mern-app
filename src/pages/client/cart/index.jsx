@@ -6,9 +6,9 @@ import List from "../../../components/unknown/list";
 
 export default function Cart() {
   const sessionToken = Cookies.get("sessionToken");
+  const [userId, setUserId] = useState("");
   const [items, setItems] = useState([]);
   const [data, setData] = useState([]);
-  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     if (sessionToken) {
@@ -18,34 +18,51 @@ export default function Cart() {
     }
   }, [sessionToken]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!userId) return; 
+  const fetchData = async () => {
+    if (!userId) return;
 
-      try {
-        const response = await fetch(`http://localhost:5000/cart/getAll`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${sessionToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId }), 
-        });
+    try {
+      const response = await fetch(`http://localhost:5000/cart/getAll`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${sessionToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to get items from the cart");
-        }
-
-        const data = await response.json();
-        setItems(data.items);
-        setData(data);
-      } catch (error) {
-        console.error("Error fetching items from the cart:", error);
+      if (!response.ok) {
+        throw new Error("Failed to get items from the cart");
       }
-    };
+
+      const fetchedData = await response.json();
+      setItems(fetchedData.items);
+      setData(fetchedData);
+    } catch (error) {
+      console.error("Error fetching items from the cart:", error);
+    }
+  };
+  useEffect(() => {
+
 
     fetchData();
-  }, [userId]); 
+  }, [userId, sessionToken]);
+
+  const updateItemQuantity = async (updatedItem) => {
+    try {
+      await fetchData();  
+    } catch (error) {
+      console.error("Error updating item quantity:", error);
+    }
+  };
+
+  const removeItem = async (itemId) => {
+    try {
+      await fetchData();  
+    } catch (error) {
+      console.error("Error updating item quantity:", error);
+    }
+  };
 
   return (
     <div className="bg-white">
@@ -59,10 +76,15 @@ export default function Cart() {
               Items in your shopping cart
             </h2>
 
-            <List items={items} pageType={'cart'} />
+            <List
+              items={items}
+              pageType={"cart"}
+              updateItemQuantity={updateItemQuantity}
+              removeItem={removeItem}
+            />
           </section>
 
-          <OrderSummary items={data} />
+          <OrderSummary data={data} /> {/* Pass the updated data to OrderSummary */}
         </form>
       </div>
     </div>

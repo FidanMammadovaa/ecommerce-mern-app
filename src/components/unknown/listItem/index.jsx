@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router";
 
-export default function ListItem({ item, itemIndex, pageType }) {
+export default function ListItem({
+  item,
+  itemIndex,
+  pageType,
+  updateItemQuantity,
+  removeItem,
+}) {
   const sessionToken = Cookies.get("sessionToken");
-  const userId = jwtDecode(sessionToken)?.userId;
+  const [userId, setUserId] = useState("");
 
-  const [cartItem, setCartItem] = useState({})
+  useEffect(() => {
+    if (sessionToken) {
+      const userId = jwtDecode(sessionToken)?.userId;
+      setUserId(userId);
+    }
+  }, [sessionToken]);
 
+  const [cartItem, setCartItem] = useState(item);
   const [quantity, setQuantity] = useState(item.quantity);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const increaseQuantity = async (e) => {
-    e.preventDefault()
-
+    e.preventDefault();
     try {
       const response = await fetch(`http://localhost:5000/cart/increment`, {
         method: "PATCH",
@@ -29,20 +40,21 @@ export default function ListItem({ item, itemIndex, pageType }) {
           color: item.color,
         }),
       });
-
+  
       if (response.ok) {
-        let data = await response.json()
-          let findItem = data.items.find((findItem) => findItem._id === item._id);
-          
-          setQuantity(findItem.quantity)
+        let data = await response.json();
+        let updatedItem = data.items.find((i) => i._id === item._id);
+        setQuantity(updatedItem.quantity);
+        setCartItem(updatedItem);
+        updateItemQuantity(updatedItem); 
       }
     } catch (error) {
       console.error("Error increasing quantity:", error);
     }
   };
-
+  
   const decreaseQuantity = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (quantity > 1) {
       try {
         const response = await fetch(`http://localhost:5000/cart/decrement`, {
@@ -58,35 +70,36 @@ export default function ListItem({ item, itemIndex, pageType }) {
             color: item.color,
           }),
         });
-
+  
         if (response.ok) {
-          let data = await response.json()
-          let findItem = data.items.find((findItem) => findItem._id === item._id);
-          
-          setQuantity(findItem.quantity)
+          let data = await response.json();
+          let updatedItem = data.items.find((i) => i._id === item._id);
+          setQuantity(updatedItem.quantity);
+          setCartItem(updatedItem);
+          updateItemQuantity(updatedItem); // Update the parent component state
         }
-        
       } catch (error) {
         console.error("Error decreasing quantity:", error);
       }
     }
   };
-
-  const handleAddToBag = (event) => {
-    event.preventDefault(); 
-    setIsSubmitting(true);
-
-    setTimeout(() => {
-      setIsSubmitting(false); 
-    }, 2000);
+  
+  const handleRemove = (e) => {
+    e.preventDefault();
+    removeItem(item._id);
   };
+  
 
+
+  const handleAddToBag = () => {
+
+  }
   return (
     <li className="flex py-4 sm:py-6">
       <div className="flex-shrink-0">
         <img
-          src={item.productId?.images?.[0] || '/default-image.jpg'}
-          alt={item.productId?.name || 'Product Image'}
+          src={cartItem.productId.images?.[0] || '/default-image.jpg'}
+          alt={cartItem.productId.name || 'Product Image'}
           className="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"
         />
       </div>
@@ -97,18 +110,18 @@ export default function ListItem({ item, itemIndex, pageType }) {
             <div className="flex justify-between">
               <h3 className="text-base">
                 <Link
-                  to={`/products`}
+                  to={`/products/${item.productId._id}`}
                   className="font-medium text-gray-700 hover:text-gray-800"
                 >
-                  {item.productId?.name}
+                  {cartItem.productId.name}
                 </Link>
               </h3>
             </div>
             <div className="mt-1 flex text-sm">
-              <p className="text-gray-500">{item.color}</p>
-              {item.size && (
+              <p className="text-gray-500">{cartItem.color}</p>
+              {cartItem.size && (
                 <p className="ml-4 pl-4 border-l border-gray-200 text-gray-500">
-                  {item.size}
+                  {cartItem.size}
                 </p>
               )}
             </div>
@@ -129,7 +142,7 @@ export default function ListItem({ item, itemIndex, pageType }) {
 
         <div className="flex flex-row text-sm justify-between">
           <p className="flex text-gray-700 space-x-2">
-            {item.productId.stock > 1 ? (
+            {cartItem.productId.stock > 1 ? (
               <svg
                 className="flex-shrink-0 h-5 w-5 text-green-500"
                 xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +172,7 @@ export default function ListItem({ item, itemIndex, pageType }) {
               </svg>
             )}
 
-            <span>{item.productId.stock >= 1 ? "In stock" : `Ships in 24 hrs`}</span>
+            <span>{cartItem.productId.stock >= 1 ? "In stock" : `Ships in 24 hrs`}</span>
           </p>
           {pageType === "cart" && (
             <>
@@ -167,7 +180,7 @@ export default function ListItem({ item, itemIndex, pageType }) {
                 <button
                   onClick={(e) => { decreaseQuantity(e) }}
                   className="text-gray-500 hover:text-gray-700 focus:outline-none"
-                  disabled={quantity <= 1}
+                  disabled={cartItem.quantity <= 1}
                 >
                   <svg
                     className="h-5 w-5"
@@ -210,8 +223,8 @@ export default function ListItem({ item, itemIndex, pageType }) {
           {pageType === "favorites" && (
             <>
               <button
-                type="button" // Изменили тип с "submit" на "button"
-                onClick={handleAddToBag} // Привязали обработчик
+                type="button"
+                onClick={handleAddToBag}
                 className={`w-1/3 rounded-md px-4 py-2 text-white focus:outline-none ${isSubmitting
                   ? "bg-gray-500 cursor-not-allowed"
                   : "bg-indigo-600 hover:bg-indigo-700"
@@ -222,7 +235,7 @@ export default function ListItem({ item, itemIndex, pageType }) {
               </button>
             </>
           )}
-          <p className="font-medium text-base text-gray-900">${item.quantity * item.productId.price}</p>
+          <p className="font-medium text-base text-gray-900">${cartItem.quantity * cartItem.productId.price}</p>
         </div>
       </div>
     </li>
