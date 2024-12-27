@@ -1,7 +1,25 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Card from "../card/index";
 
-export default function ProductCarousel({ products }) {
+export default function ProductCarousel() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+
+      let queryUrl = `http://localhost:5000/products?limit=8`;
+
+      try {
+        const res = await fetch(queryUrl);
+        const data = await res.json();
+        setProducts(data.products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } 
+    };
+
+    fetchData();
+  }, [])
   const scrollRef = useRef(null);
 
   const scrollByAmount = (direction) => {
