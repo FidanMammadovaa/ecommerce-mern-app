@@ -6,7 +6,6 @@ import Cookies from 'js-cookie';
 
 export default function OrderSummary({ data }) {
   const [show, setShow] = useState(false);
-  console.log(data);
   
 
   const handleCheckout = () => {

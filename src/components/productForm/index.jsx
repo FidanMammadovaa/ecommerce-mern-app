@@ -91,7 +91,10 @@ export default function ProductForm({
             <Radio
               key={index}
               value={color}
-              className="cursor-pointer rounded-full border border-gray-200 p-1 focus:outline-none"
+              className={`cursor-pointer rounded-full border p-1 focus:outline-none ${selectedColor === color
+                ? "ring-2 ring-indigo-500"
+                : "border-gray-200"
+                }`}
             >
               <span
                 className="block h-8 w-8 rounded-full"
@@ -114,9 +117,12 @@ export default function ProductForm({
               key={index}
               value={size}
               disabled={product.stock === 0}
-              className={`group flex items-center justify-center rounded-md border px-4 py-2 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none ${product.stock
-                ? "cursor-pointer bg-white text-gray-900"
-                : "cursor-not-allowed bg-gray-100 text-gray-400"
+              className={`group flex items-center justify-center rounded-md border px-4 py-2 text-sm font-medium uppercase focus:outline-none ${selectedSize === size
+                ? "ring-2 ring-indigo-500"
+                : "border-gray-300"
+                } ${product.stock
+                  ? "cursor-pointer bg-white text-gray-900"
+                  : "cursor-not-allowed bg-gray-100 text-gray-400"
                 }`}
             >
               {size}

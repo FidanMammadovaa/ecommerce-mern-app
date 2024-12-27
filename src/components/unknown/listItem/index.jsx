@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function ListItem({
   item,
@@ -23,7 +23,7 @@ export default function ListItem({
   const [cartItem, setCartItem] = useState(item);
   const [quantity, setQuantity] = useState(item.quantity);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const navigate = useNavigate()
   const increaseQuantity = async (e) => {
     e.preventDefault();
     try {
@@ -91,8 +91,8 @@ export default function ListItem({
   
 
 
-  const handleAddToBag = () => {
-
+  const handleNavToProduct = async(id) => {
+    navigate(`/products/${id}`)
   }
   return (
     <li className="flex py-4 sm:py-6">
@@ -100,7 +100,7 @@ export default function ListItem({
         <img
           src={cartItem.productId.images?.[0] || '/default-image.jpg'}
           alt={cartItem.productId.name || 'Product Image'}
-          className="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"
+          className="w-24 h-24 rounded-md object-center object-contain sm:w-48 sm:h-48"
         />
       </div>
 
@@ -178,6 +178,7 @@ export default function ListItem({
             <>
               <div className="flex items-center space-x-2">
                 <button
+                type="button"
                   onClick={(e) => { decreaseQuantity(e) }}
                   className="text-gray-500 hover:text-gray-700 focus:outline-none"
                   disabled={cartItem.quantity <= 1}
@@ -224,18 +225,17 @@ export default function ListItem({
             <>
               <button
                 type="button"
-                onClick={handleAddToBag}
+                onClick={() => handleNavToProduct(cartItem.productId._id)}
                 className={`w-1/3 rounded-md px-4 py-2 text-white focus:outline-none ${isSubmitting
                   ? "bg-gray-500 cursor-not-allowed"
                   : "bg-indigo-600 hover:bg-indigo-700"
                   }`}
-                disabled={isSubmitting}
               >
-                {isSubmitting ? "Adding..." : "Add to Bag"}
+                {"View product"}
               </button>
             </>
           )}
-          <p className="font-medium text-base text-gray-900">${cartItem.quantity * cartItem.productId.price}</p>
+          <p className="font-medium text-base text-gray-900">${cartItem.productId.price}</p>
         </div>
       </div>
     </li>
