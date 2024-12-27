@@ -8,7 +8,6 @@ export default function Products() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  // Get gender from query, default to "women" if not specified
   const gender = queryParams.get("gender") || "women";
   const parentCategory = queryParams.get("parentCategory");
   const subCategory = queryParams.get("subCategory");

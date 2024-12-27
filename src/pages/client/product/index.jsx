@@ -17,7 +17,6 @@ export default function Product() {
       try {
         const res = await fetch(`http://localhost:5000/products/${id}`);
         const data = await res.json();
-        console.log(data);
         setProduct(data);
         setMainImage(data.images[0]);
 
@@ -50,7 +49,7 @@ export default function Product() {
                   key={index}
                   src={image}
                   alt={product.name}
-                  className={`h-24 w-24 rounded-lg cursor-pointer object-cover ${
+                  className={`h-20 w-20 rounded-lg cursor-pointer object-cover ${
                     mainImage === image ? "ring-2 ring-indigo-500" : ""
                   }`}
                   onClick={() => setMainImage(image)}

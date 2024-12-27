@@ -10,9 +10,6 @@ export default function Card({ product }) {
     navigate(`/products/${id}`);
   };
 
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
 
   const [userId, setUserId] = useState(null);
   const sessionToken = Cookies.get("sessionToken");
@@ -26,11 +23,9 @@ export default function Card({ product }) {
     }
   }, [sessionToken]);
 
-  console.log(userId);
 
-  // Add a check to ensure product and images are available
   if (!product || !product.images || product.images.length === 0) {
-    return <div>Loading...</div>; // Show a loading message or fallback UI
+    return <div>Loading...</div>; 
   }
 
   return (

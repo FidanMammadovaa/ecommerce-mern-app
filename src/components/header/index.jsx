@@ -87,7 +87,6 @@ export default function Header() {
           );
 
           const data = await res.json();
-          console.log(data);
 
           setParentCategories(data);
         } catch (error) {

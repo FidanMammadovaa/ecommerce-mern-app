@@ -1,4 +1,12 @@
-export default function OrderSummary() {
+import { useState } from "react";
+import Alert from '../unknown/alert'
+import { Link } from 'react-router'
+export default function OrderSummary({ items }) {
+  let [show, setShow] = useState(false)
+
+  const handleCheckout = () => {
+    setShow((prev) => !prev)
+  }
   return (
     <section
       aria-labelledby="summary-heading"
@@ -11,13 +19,13 @@ export default function OrderSummary() {
       <dl className="mt-6 space-y-4">
         <div className="flex items-center justify-between">
           <dt className="text-sm text-gray-600">Subtotal</dt>
-          <dd className="text-sm font-medium text-gray-900">$99.00</dd>
+          <dd className="text-sm font-medium text-gray-900">{items.totalPrice}</dd>
         </div>
         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
           <dt className="flex items-center text-sm text-gray-600">
             <span>Shipping estimate</span>
-            <a
-              href="#"
+            <Link
+              to=""
               className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
             >
               <span className="sr-only">
@@ -37,15 +45,15 @@ export default function OrderSummary() {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-            </a>
+            </Link>
           </dt>
           <dd className="text-sm font-medium text-gray-900">$5.00</dd>
         </div>
         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
           <dt className="flex text-sm text-gray-600">
             <span>Tax estimate</span>
-            <a
-              href="#"
+            <Link
+              to=""
               className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
             >
               <span className="sr-only">
@@ -65,24 +73,26 @@ export default function OrderSummary() {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-            </a>
+            </Link>
           </dt>
           <dd className="text-sm font-medium text-gray-900">$8.32</dd>
         </div>
         <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
           <dt className="text-base font-medium text-gray-900">Order total</dt>
-          <dd className="text-base font-medium text-gray-900">$112.32</dd>
+          <dd className="text-base font-medium text-gray-900">${items.totalPrice + 13.32}</dd>
         </div>
       </dl>
 
       <div className="mt-6">
         <button
-          type="submit"
+          type="button"
+          onClick={handleCheckout}
           className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
         >
           Checkout
         </button>
       </div>
+      {show ? <Alert /> : <></>}
     </section>
   );
 }

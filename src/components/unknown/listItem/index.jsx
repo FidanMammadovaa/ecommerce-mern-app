@@ -72,16 +72,13 @@ export default function ListItem({ item, itemIndex, pageType }) {
     }
   };
 
-  // Функция для обработки клика по кнопке "Add to Bag"
   const handleAddToBag = (event) => {
-    event.preventDefault(); // Отменить перезагрузку страницы
+    event.preventDefault(); 
     setIsSubmitting(true);
 
-    // Ваша логика добавления товара в корзину
-    // Пример:
     setTimeout(() => {
-      setIsSubmitting(false); // Сброс состояния после "добавления"
-    }, 2000); // Эмулируем процесс добавления
+      setIsSubmitting(false); 
+    }, 2000);
   };
 
   return (
