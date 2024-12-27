@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import NotFound from "./pages/not-found";
 import Cart from "./pages/client/cart";
 import Favorites from "./pages/client/favorites";
+import Notifications from "./pages/client/notifications";
 
 function App() {
   const [sessionToken, setSessionToken] = useState(
@@ -28,6 +29,7 @@ function App() {
             <>
               <Route path="/cart" element={<Cart />} />
               <Route path="/favorites" element={<Favorites />} />
+              <Route path="/notifications" element={<Notifications />} />
             </>
           )}
           {!sessionToken && (

@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate } from "react-router";
 
 export default function ListItem({
+  onDelete,
   item,
   itemIndex,
   pageType,
@@ -76,7 +77,7 @@ export default function ListItem({
           let updatedItem = data.items.find((i) => i._id === item._id);
           setQuantity(updatedItem.quantity);
           setCartItem(updatedItem);
-          updateItemQuantity(updatedItem); // Update the parent component state
+          updateItemQuantity(updatedItem); 
         }
       } catch (error) {
         console.error("Error decreasing quantity:", error);
@@ -93,6 +94,29 @@ export default function ListItem({
 
   const handleNavToProduct = async(id) => {
     navigate(`/products/${id}`)
+  }
+
+  const handleDeleteFavorite = async (id) => {
+    console.log(id);
+    
+    try {
+      const response = await fetch(`http://localhost:5000/favorites`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${sessionToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          productId: id,
+        }),
+      });
+
+     
+    } catch (error) {
+      console.error("Error decreasing quantity:", error);
+    }
+    onDelete()
   }
   return (
     <li className="flex py-4 sm:py-6">
@@ -223,6 +247,7 @@ export default function ListItem({
           )}
           {pageType === "favorites" && (
             <>
+            <button type="button" onClick={() => handleDeleteFavorite(item.productId._id)}>Delete item</button>
               <button
                 type="button"
                 onClick={() => handleNavToProduct(cartItem.productId._id)}

@@ -1,7 +1,7 @@
 import React from "react";
 import ListItem from "../listItem";
 
-export default function List({ items, pageType, updateItemQuantity, removeItem }) {
+export default function List({ onDelete, items, pageType, updateItemQuantity, removeItem }) {
   return (
     <form className="flex flex-1">
       <h2 id="cart-heading" className="sr-only">
@@ -14,6 +14,7 @@ export default function List({ items, pageType, updateItemQuantity, removeItem }
             key={item._id}
             item={item}
             itemIndex={itemIndex}
+            onDelete={onDelete}
             pageType={pageType}
             updateItemQuantity={updateItemQuantity}
             removeItem={removeItem}
