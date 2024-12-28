@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Products from "./pages/client/products/index";
 import Home from "./pages/client/home/index";
@@ -18,6 +18,11 @@ function App() {
   const [sessionToken, setSessionToken] = useState(
     Cookies.get("sessionToken") || ""
   );
+
+  useEffect(() => {
+    let token = Cookies.get("sessionToken")
+    setSessionToken(token)
+  }, [])
 
   return (
     <div className="App">
