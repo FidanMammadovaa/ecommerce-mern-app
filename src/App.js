@@ -12,6 +12,7 @@ import NotFound from "./pages/not-found";
 import Cart from "./pages/client/cart";
 import Favorites from "./pages/client/favorites";
 import Notifications from "./pages/client/notifications";
+import Logout from "./pages/client/logout";
 
 function App() {
   const [sessionToken, setSessionToken] = useState(
@@ -30,6 +31,7 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/notifications" element={<Notifications />} />
+              <Route path="/logout" element={<Logout />} />
             </>
           )}
           {!sessionToken && (

@@ -42,11 +42,7 @@ const categories = [
   "Beauty",
 ];
 
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -61,7 +57,7 @@ export default function Header() {
   );
 
   const handleNavigation = (path) => {
-    navigate(path); // Navigate to the provided path
+    navigate(path); 
   };
 
   const [parentCategories, setParentCategories] = useState([]);
@@ -79,7 +75,7 @@ export default function Header() {
         try {
           let url = `http://localhost:5000/parentCategories`
 
-          if (gender !== ""){
+          if (gender !== "") {
             url += `?gender=${gender}`
           }
           const res = await fetch(
@@ -180,16 +176,33 @@ export default function Header() {
                     transition
                     className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                   >
-                    {userNavigation.map((item) => (
-                      <MenuItem key={item.name}>
-                        <Link
-                          to={item.href}
-                          className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                        >
-                          {item.name}
-                        </Link>
-                      </MenuItem>
-                    ))}
+                    {sessionToken === "" ? (
+                      <>
+                        <MenuItem>
+                          <Link
+                            to={`/login`}
+                            className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                          >
+                            Login
+                          </Link>
+                        </MenuItem>
+                        <MenuItem>
+                          <Link
+                            to={`/register`}
+                            className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                          >
+                            Register
+                          </Link>
+                        </MenuItem>
+                      </>
+                    ) : <MenuItem>
+                      <Link
+                        to={`/logout`}
+                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                      >
+                        Logout
+                      </Link>
+                    </MenuItem>}
                   </MenuItems>
                 </Menu>
               </div>
@@ -280,16 +293,13 @@ export default function Header() {
               </button>
             </div>
             <div className="mt-3 space-y-1 px-2">
-              {userNavigation.map((item) => (
-                <DisclosureButton
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                >
-                  {item.name}
-                </DisclosureButton>
-              ))}
+              <DisclosureButton
+                as="a"
+                href={'/login'}
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+              >
+                Login
+              </DisclosureButton>
             </div>
           </div>
         </DisclosurePanel>
@@ -306,15 +316,13 @@ export default function Header() {
                   key={item.name}
                   to={`products?parentCategory=${item}&gender=${gender}`}
                   aria-current={item.current ? "page" : undefined}
-                  className={`relative group text-nowrap ${
-                    item.name === "Sale %" ? "text-red-500" : ""
-                  } ${isActive ? "font-semibold" : ""}`}
+                  className={`relative group text-nowrap ${item.name === "Sale %" ? "text-red-500" : ""
+                    } ${isActive ? "font-semibold" : ""}`}
                 >
                   {item}
                   <span
-                    className={`absolute bottom-0 left-0 w-0 h-[2px] group-hover:w-full transition-all duration-300 ${
-                      item.name === "Sale %" ? "bg-red-500" : "bg-gray-500"
-                    }`}
+                    className={`absolute bottom-0 left-0 w-0 h-[2px] group-hover:w-full transition-all duration-300 ${item.name === "Sale %" ? "bg-red-500" : "bg-gray-500"
+                      }`}
                   ></span>
                 </Link>
               );
