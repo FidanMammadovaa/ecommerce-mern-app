@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/ecommerce-app/static/css/main.dd2caa5b.css",
-    "main.js": "/ecommerce-app/static/js/main.620c1bf6.js",
-    "static/js/453.2d9c4416.chunk.js": "/ecommerce-app/static/js/453.2d9c4416.chunk.js",
-    "index.html": "/ecommerce-app/index.html",
-    "main.dd2caa5b.css.map": "/ecommerce-app/static/css/main.dd2caa5b.css.map",
-    "main.620c1bf6.js.map": "/ecommerce-app/static/js/main.620c1bf6.js.map",
-    "453.2d9c4416.chunk.js.map": "/ecommerce-app/static/js/453.2d9c4416.chunk.js.map"
+    "main.css": "/ecommerce-mern-app/static/css/main.c968eb55.css",
+    "main.js": "/ecommerce-mern-app/static/js/main.cff2e298.js",
+    "static/js/453.2d9c4416.chunk.js": "/ecommerce-mern-app/static/js/453.2d9c4416.chunk.js",
+    "index.html": "/ecommerce-mern-app/index.html",
+    "main.c968eb55.css.map": "/ecommerce-mern-app/static/css/main.c968eb55.css.map",
+    "main.cff2e298.js.map": "/ecommerce-mern-app/static/js/main.cff2e298.js.map",
+    "453.2d9c4416.chunk.js.map": "/ecommerce-mern-app/static/js/453.2d9c4416.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.dd2caa5b.css",
-    "static/js/main.620c1bf6.js"
+    "static/css/main.c968eb55.css",
+    "static/js/main.cff2e298.js"
   ]
 }
