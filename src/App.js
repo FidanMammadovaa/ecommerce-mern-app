@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/ecommerce-mern-app" element={<Layout />}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<Product />} />
