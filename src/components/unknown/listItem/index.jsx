@@ -41,19 +41,19 @@ export default function ListItem({
           color: item.color,
         }),
       });
-  
+
       if (response.ok) {
         let data = await response.json();
         let updatedItem = data.items.find((i) => i._id === item._id);
         setQuantity(updatedItem.quantity);
         setCartItem(updatedItem);
-        updateItemQuantity(updatedItem); 
+        updateItemQuantity(updatedItem);
       }
     } catch (error) {
       console.error("Error increasing quantity:", error);
     }
   };
-  
+
   const decreaseQuantity = async (e) => {
     e.preventDefault();
     if (quantity > 1) {
@@ -71,34 +71,59 @@ export default function ListItem({
             color: item.color,
           }),
         });
-  
+
         if (response.ok) {
           let data = await response.json();
           let updatedItem = data.items.find((i) => i._id === item._id);
           setQuantity(updatedItem.quantity);
           setCartItem(updatedItem);
-          updateItemQuantity(updatedItem); 
+          updateItemQuantity(updatedItem);
         }
       } catch (error) {
         console.error("Error decreasing quantity:", error);
       }
     }
   };
-  
-  const handleRemove = (e) => {
+
+  const handleRemove = async (e, id, size, color) => {
+    console.log(id);
+    
     e.preventDefault();
-    removeItem(item._id);
+    try {
+      const response = await fetch(`http://localhost:5000/cart/remove`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${sessionToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          productId: id,
+          size,
+          color,
+        }),
+      });
+      console.log(response);
+      
+  
+      if (response.ok) {
+        removeItem(item._id);
+      }
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
   };
   
 
 
-  const handleNavToProduct = async(id) => {
+
+  const handleNavToProduct = async (id) => {
     navigate(`/products/${id}`)
   }
 
   const handleDeleteFavorite = async (id) => {
     console.log(id);
-    
+
     try {
       const response = await fetch(`http://localhost:5000/favorites`, {
         method: "DELETE",
@@ -112,7 +137,7 @@ export default function ListItem({
         }),
       });
 
-     
+
     } catch (error) {
       console.error("Error decreasing quantity:", error);
     }
@@ -158,7 +183,6 @@ export default function ListItem({
                 className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Remove</span>
-                {/* SVG icon for removing */}
               </button>
             </div>
           </div>
@@ -202,7 +226,7 @@ export default function ListItem({
             <>
               <div className="flex items-center space-x-2">
                 <button
-                type="button"
+                  type="button"
                   onClick={(e) => { decreaseQuantity(e) }}
                   className="text-gray-500 hover:text-gray-700 focus:outline-none"
                   disabled={cartItem.quantity <= 1}
@@ -223,8 +247,8 @@ export default function ListItem({
                 </button>
                 <span>{quantity}</span>
                 <button
+                  type="button"
                   onClick={(e) => { increaseQuantity(e) }}
-
                   className="text-gray-500 hover:text-gray-700 focus:outline-none"
                   disabled={quantity >= item.productId.stock}
                 >
@@ -242,12 +266,15 @@ export default function ListItem({
                     />
                   </svg>
                 </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleRemove(e, cartItem.productId._id, cartItem.size, cartItem.color)}>Remove</button>
               </div>
             </>
           )}
           {pageType === "favorites" && (
             <>
-            <button type="button" onClick={() => handleDeleteFavorite(item.productId._id)}>Delete item</button>
+              <button type="button" onClick={() => handleDeleteFavorite(item.productId._id)}>Delete item</button>
               <button
                 type="button"
                 onClick={() => handleNavToProduct(cartItem.productId._id)}

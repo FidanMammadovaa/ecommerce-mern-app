@@ -3,7 +3,7 @@ import ListItem from "../listItem";
 
 export default function List({ onDelete, items, pageType, updateItemQuantity, removeItem }) {
   return (
-    <form className="flex flex-1">
+    <div className="flex flex-1">
       <h2 id="cart-heading" className="sr-only">
         Items in your shopping cart
       </h2>
@@ -21,6 +21,6 @@ export default function List({ onDelete, items, pageType, updateItemQuantity, re
           />
         ))}
       </ul>
-    </form>
+    </div>
   );
 }

@@ -84,7 +84,7 @@ export default function Cart() {
             />
           </section>
 
-          <OrderSummary data={data} /> {/* Pass the updated data to OrderSummary */}
+          <OrderSummary data={data} />
         </form>
       </div>
     </div>
