@@ -6,6 +6,7 @@ export default function Logout() {
     const handleRemoveSessionToken = () => {
         Cookies.remove("sessionToken")
         navigate("/")
+        window.location.reload()
     }
 
     

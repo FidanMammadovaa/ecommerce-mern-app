@@ -34,6 +34,7 @@ export default function Login() {
 
       Cookies.set("sessionToken", data.token, { expires: expirationDate });
       navigate('/products')
+      window.location.reload()
     } catch (error) {
       console.error("Error logging in:", error.message);
     }

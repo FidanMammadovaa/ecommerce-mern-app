@@ -59,7 +59,7 @@ export default function Sidebar() {
       </button>
 
       <aside
-        className={`fixed inset-y-0 left-0 w-64 p-4 border-x-2 transform transition-transform duration-300 lg:static lg:translate-x-0 z-50 max-lg:bg-red-950 ${
+        className={`fixed inset-y-0 left-0 w-64 p-4 border-x-2 transform transition-transform duration-300 lg:static lg:translate-x-0 z-50 max-lg:bg-gray-700 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
