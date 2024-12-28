@@ -57,6 +57,7 @@ export default function Product() {
       });
       const data = await res.json();
       console.log(data)
+      alert("Successfully added to favorites")
     } catch (error) {
       console.error("Error fetching product:", error);
     }
